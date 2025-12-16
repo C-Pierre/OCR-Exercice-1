@@ -1,30 +1,49 @@
-<div>
-  <div>
-    <div class="center">
-      <div>{{ titlePage }}</div>
-    </div>
-    <div class="split">
-      <div>
-        <p>Number of entries</p>
-        <p>{{ totalEntries }}</p>
-      </div>
-      <div>
-        <p>Total Number of medals</p>
-        <p>{{ totalMedals }}</p>
-      </div>
-      <div>
-        <p>Total Number of athletes</p>
-        <p>{{ totalAthletes }}</p>
-      </div>
-    </div>
+<app-loader
+  [visible]="isLoading"
+  [fullscreen]="true"
+  text="Loading country data..."
+></app-loader>
+
+<div *ngIf="!isLoading && error" class="error">
+  {{ error }}
+</div>
+
+<div class="container" id="country-page">
+  <div class="block" *ngIf="!isLoading && !error">
+    <app-header
+      [title]="titlePage"
+      [indicators]="indicators">
+    </app-header>
   </div>
+
   <div class="chart-container wrapper-container">
-    <div class="container">
-      <canvas id="countryChart">{{ lineChart }}</canvas>
+    <div *ngIf="countryFound && hasData">
+      <p id="line-chart-desc" class="sr-only">
+        Line chart showing medals, athletes, gold, silver, and bronze counts over years for the selected country.
+      </p>
+
+      <canvas
+        id="countryChart"
+        role="img"
+        aria-describedby="line-chart-desc"
+      ></canvas>
+
       <h2>Date</h2>
     </div>
   </div>
-  <div class="center">
-    <a routerLink="">Go back</a>
+  <div *ngIf="!hasData" class="center">
+    <p>No data for selected country</p>
+    <div class="center">
+      <app-button-back
+        path=""
+        title="Go back to home page">
+      </app-button-back>
+    </div>
+  </div>
+  <div *ngIf="hasData" class="center">
+    <app-button-back
+      path=""
+      title="Go back to home page">
+    </app-button-back>
   </div>
 </div>

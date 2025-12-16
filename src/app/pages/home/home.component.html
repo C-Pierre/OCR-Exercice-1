@@ -1,20 +1,79 @@
-<h2>Olympic games app</h2>
-<hr/>
-<div>
-  <div>
-    <div class="center">
-      <div>{{ titlePage }}</div>
-    </div>
-    <div class="split">
-      <div>
-        <p>Number of countries</p>
-        <p>{{ totalCountries }}</p>
+<app-loader
+  [visible]="isLoading"
+  [fullscreen]="true"
+  text="Loading home page..."
+></app-loader>
+
+<div class="container">
+  <div class="block">
+    <app-header
+      [error]=error
+      [title]="titlePage"
+      [indicators]="indicators">
+    </app-header>
+
+    <div
+      class="filters"
+      role="group"
+      aria-labelledby="filter-label"
+    >
+      <div *ngIf="hasData">
+        <p id="filter-label">Filter by :</p>
+
+        <button
+          type="button"
+          aria-label="Show total medals"
+          [attr.aria-pressed]="selectedFilter === MedalFilter.TOTAL"
+          (click)="onFilterChange(MedalFilter.TOTAL)"
+          [class.active]="selectedFilter === MedalFilter.TOTAL">
+          Total
+        </button>
+
+        <button
+          type="button"
+          aria-label="Show gold medals"
+          [attr.aria-pressed]="selectedFilter === MedalFilter.GOLD"
+          (click)="onFilterChange(MedalFilter.GOLD)"
+          [class.active]="selectedFilter === MedalFilter.GOLD">
+          Gold
+        </button>
+
+        <button
+          type="button"
+          aria-label="Show silver medals"
+          [attr.aria-pressed]="selectedFilter === MedalFilter.SILVER"
+          (click)="onFilterChange(MedalFilter.SILVER)"
+          [class.active]="selectedFilter === MedalFilter.SILVER">
+          Silver
+        </button>
+
+        <button
+          type="button"
+          aria-label="Show bronze medals"
+          [attr.aria-pressed]="selectedFilter === MedalFilter.BRONZE"
+          (click)="onFilterChange(MedalFilter.BRONZE)"
+          [class.active]="selectedFilter === MedalFilter.BRONZE">
+          Bronze
+        </button>
       </div>
-      <div>
-        <p>Number of JOs</p>
-        <p>{{ totalJOs }}</p>
+
+      <div *ngIf="!hasData && !isLoading && error" class="error">
+        <p>{{ error }}</p>
       </div>
     </div>
   </div>
-  <canvas id="DashboardPieChart">{{ pieChart }}</canvas>
+
+  <div class="chart-container" *ngIf="hasData">
+    <p id="pie-chart-desc" class="sr-only">
+      Pie chart showing medal distribution by country.
+      Use the filter buttons to switch between total, gold, silver or bronze medals.
+      Click on a country to view detailed statistics.
+    </p>
+
+    <canvas
+      id="DashboardPieChart"
+      role="img"
+      aria-describedby="pie-chart-desc"
+    ></canvas>
+  </div>
 </div>

@@ -1,0 +1,12 @@
+<div class="header">
+  <div class="center">
+    <h2>{{ title }}</h2>
+  </div>
+
+  <div class="split" role="group" aria-label="Key performance indicators" *ngIf="!error">
+    <div *ngFor="let indicator of indicators">
+      <p class="indicator-label">{{ indicator.label }}</p>
+      <p class="indicator-value" tabindex="0">{{ indicator.value }}</p>
+    </div>
+  </div>
+</div>
